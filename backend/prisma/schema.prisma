@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  cart cart[]
+  order order[]
+  
+}
+
+model products {
+  id Int @id @default(autoincrement())
+  product_name String 
+  product_description String?
+  product_price Float 
+  product_image_url Bytes? 
+  product_quantity Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  cart_items cart_items[]
+  order_items order_items[]
+}
+
+model cart {
+  id Int @id @default(autoincrement())
+  user_id Int
+  user user @relation(fields: [user_id],references: [id])
+  product_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  cart_items cart_items[]
+}
+
+model cart_items {
+  id Int @id @default(autoincrement())
+  cart_id Int
+  cart cart @relation(fields: [cart_id],references: [id])
+  product_id Int
+  product products @relation(fields: [product_id],references: [id])
+  quantity_cart Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model order {
+  id Int @id @default(autoincrement())
+  user_id Int
+  user user @relation(fields: [user_id],references: [id])
+  order_status String
+  total_price Float
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  order_items order_items[]
+}
+
+model order_items {
+  id Int @id @default(autoincrement())
+  product_id Int
+  order_id Int
+  order order @relation(fields: [order_id], references: [id])
+  products products @relation (fields: [product_id],references: [id])
+  quantity_order Int
+  price_unit Float //snapshot
+}
+
