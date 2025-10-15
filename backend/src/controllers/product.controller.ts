@@ -34,12 +34,18 @@ export class ProductController {
     }
 
     createProduct = async (req: Request, res: Response): Promise<void> => {
+        const { product_name, 
+                product_description, 
+                product_price,
+                product_image_url, 
+                product_quantity} = req.body;
+        
         let productData: CreateProduct = {
-            product_name: req.body.product_name,
-            product_description: req.body.product_description,
-            product_price: req.body.product_price,
-            product_image_url: req.body.product_image_url,
-            product_quantity: req.body.product_quantity
+            product_name,
+            product_description,
+            product_price,
+            product_image_url,
+            product_quantity,
         };
 
         try {

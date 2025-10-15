@@ -23,13 +23,19 @@ export class productService {
     }
 
     async createProducts (requestData: CreateProduct) {
+        const { product_name, 
+                product_description, 
+                product_price,
+                product_image_url, 
+                product_quantity
+        } = requestData;
 
-        let createData = {
-            product_name: requestData.product_name,
-            product_description: requestData.product_description,
-            product_price: requestData.product_price,
-            product_image_url: requestData.product_image_url ?? null,
-            product_quantity: requestData.product_quantity
+        let createData: CreateProduct = {
+            product_name,
+            product_description,
+            product_price,
+            product_image_url,
+            product_quantity
         };
 
         return this.productRepo.createProducts(createData);
