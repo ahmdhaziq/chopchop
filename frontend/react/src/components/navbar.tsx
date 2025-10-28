@@ -19,7 +19,6 @@ function Sidebar() {
           left="0"
           w="100vw"
           h="100vh"
-          bg="black.400"
           onClick={handleClose}
           zIndex="1000"
         />
